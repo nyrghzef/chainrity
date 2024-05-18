@@ -51,6 +51,7 @@ contract DonationPlatform is KeeperCompatibleInterface {
     function checkUpkeep(bytes calldata checkData) external view override returns (bool upkeepNeeded, bytes memory performData) {
         // we can replace the logic to check for upcoming recurring donations
         // This function checks for donations marked recurring after 1 day from donation timestamp
+        
         upkeepNeeded = upcomingRecurringDonation();
         performData = ""; 
     }
@@ -84,6 +85,7 @@ contract DonationPlatform is KeeperCompatibleInterface {
         (,int256 answer,,) = priceFeed.latestRoundData();
         // Convert minimumDonation in Wei to reference currency using price feed data
         // additional logic needed for conversion based on price feed decimals etc.
-        return minimumDonation * uint256(answer);
+        uint256 minimumDonationInUSD = minimumDonation * uint256(answer) / (10 ** priceFeed.decimals());
+        return minimumDonation
     }
 }
