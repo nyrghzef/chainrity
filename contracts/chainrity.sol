@@ -2,11 +2,10 @@
 
 pragma solidity ^0.8.19;
 
-import "@chainlink/contracts/src/v0.8/KeeperCompatibleInterface.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/automation/interfaces/AutomationCompatibleInterface.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-contract DonationPlatform is KeeperCompatibleInterface {
-
+contract DonationPlatform is AutomationCompatibleInterface {
     // Donation struct to hold details about each donation
     struct Donation {
         address donor;
@@ -82,10 +81,10 @@ contract DonationPlatform is KeeperCompatibleInterface {
     // Function to get minimum donation amount in reference currency (e.g., USD) using Chainlink Price Feed
     function getMinimumDonationInUSD() public view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(priceFeedAddress);
-        (,int256 answer,,) = priceFeed.latestRoundData();
+        (,int256 answer,,,) = priceFeed.latestRoundData();
         // Convert minimumDonation in Wei to reference currency using price feed data
         // additional logic needed for conversion based on price feed decimals etc.
         uint256 minimumDonationInUSD = minimumDonation * uint256(answer) / (10 ** priceFeed.decimals());
-        return minimumDonation
+        return minimumDonation;
     }
 }
