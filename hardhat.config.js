@@ -1,13 +1,12 @@
 require("@nomicfoundation/hardhat-toolbox");
-require("@nomiclabs/hardhat-ethers");
-require("@chainlink/hardhat-chainlink");
 require('dotenv').config();
 
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   paths: {
-    sources: "./contracts"
+    sources: "./contracts",
+    artifacts: "./artifacts"
   },
   defaultNetwork: "hardhat",
   networks: {
