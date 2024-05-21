@@ -1,12 +1,11 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT 
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.19;
 
-import "@chainlink/contracts/src/v0.8/KeeperCompatibleInterface.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/automation/interfaces/AutomationCompatibleInterface.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-contract DonationPlatform is KeeperCompatibleInterface {
-
+contract DonationPlatform is AutomationCompatibleInterface {
     // Donation struct to hold details about each donation
     struct Donation {
         address donor;
@@ -22,7 +21,7 @@ contract DonationPlatform is KeeperCompatibleInterface {
     // Variable to store next donation ID
     uint256 public nextDonationId;
 
-    // Chainlink Price Feed address for reference currency 
+    // Chainlink Price Feed address for reference currency (e.g., USD)
     address public priceFeedAddress;
 
     // Minimum donation amount in Wei
@@ -49,27 +48,27 @@ contract DonationPlatform is KeeperCompatibleInterface {
 
     // Function to check if upkeep is needed (for automatic recurring donations)
     function checkUpkeep(bytes calldata checkData) external view override returns (bool upkeepNeeded, bytes memory performData) {
-        // we need a better logic to check for upcoming recurring donations
+        // we can replace the logic to check for upcoming recurring donations
+        // This function checks for donations marked recurring after 1 day from donation timestamp
         
         upkeepNeeded = upcomingRecurringDonation();
         performData = ""; 
     }
-
     // Function to perform upkeep (automatic recurring donations)
     function performUpkeep(bytes calldata performData) external override {
         // Logic to process automatic recurring donations based on checkUpkeep results
         if (upcomingRecurringDonation()) {
             // Call donate function again for the recurring donation
-            donate(_recipient, _amount, _isRecurring);
-            // need to calculate the new donation amount based on the original amount
+           
+            // we need to calculate the new donation amount based on the original amount
            
         }
     }
 
     // Helper function to check for upcoming recurring donations
     function upcomingRecurringDonation() private view returns (bool) {
-        // Iterate through donations and check for upcoming recurring ones based on timestamp, logic can be changed
-        
+        // Iterate through donations and check for upcoming recurring ones based on timestamp
+        // We can change the logic
         for (uint256 i = 1; i < nextDonationId; i++) {
             Donation memory donation = donations[i];
             if (donation.isRecurring && block.timestamp - donation.timestamp >= 1 days) {
@@ -82,9 +81,10 @@ contract DonationPlatform is KeeperCompatibleInterface {
     // Function to get minimum donation amount in reference currency (e.g., USD) using Chainlink Price Feed
     function getMinimumDonationInUSD() public view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(priceFeedAddress);
-        (,int256 answer,,) = priceFeed.latestRoundData();
+        (,int256 answer,,,) = priceFeed.latestRoundData();
         // Convert minimumDonation in Wei to reference currency using price feed data
-        // we need additional logic for conversion based on price feed decimals
-        return minimumDonation * uint256(answer);
+        // additional logic needed for conversion based on price feed decimals etc.
+        uint256 minimumDonationInUSD = minimumDonation * uint256(answer) / (10 ** priceFeed.decimals());
+        return minimumDonation;
     }
 }
