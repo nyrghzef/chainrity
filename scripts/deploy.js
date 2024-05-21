@@ -1,12 +1,16 @@
+// This script is used to deploy the Chainrity contract to the local blockchain
 const { ethers } = require("hardhat");
 
 async function main() {
-    //Get the chairity contract to deploy
-    const Chairity = await ethers.getContractFactory("Chairity");
+    // Get the Chainrity contract to deploy
+    const Chainrity = await ethers.getContractFactory("Chainrity");
 
-    //start deployment
-    const chainrity = await Chairity.deploy();
-    console.log("Chairity deployed to:", chairity.address);
+    // Start deployment
+    const chainrity = await Chainrity.deploy();
+    await chainrity.deployed();
+
+    console.log("Chainrity deployed to:", chainrity.address);
+    console.log("Transaction hash:", chainrity.deployTransaction.hash);
 }
 
 main()
