@@ -21,8 +21,31 @@
 //     });
 
 // This script is used to deploy the DonationPlatform contract to the local blockchain
-const BigNumber = require('ethers').BigNumber;
+// This script is used to deploy the DonationPlatform contract to the local blockchain
+const { ethers } = require("hardhat");
+const BigNumber = ethers.BigNumber;
 const minimumDonationInEther = 0.1;
+
+async function main() {
+    // Get the DonationPlatform contract to deploy
+    const DonationPlatform = await ethers.getContractFactory("DonationPlatform");
+
+    const priceFeedAddress = "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"; // replace with your price feed address
+    const minimumDonation = BigNumber.from(ethers.utils.parseEther(minimumDonationInEther.toString()).toString());
+
+    // Start deployment, replace with your constructor arguments if any
+    const donationPlatform = await DonationPlatform.deploy(priceFeedAddress, minimumDonation);
+
+    console.log("DonationPlatform deployed to:", donationPlatform.address);
+    console.log("Transaction hash:", donationPlatform.deployTransaction.hash);
+}
+
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
 
 
 async function main() {
@@ -32,7 +55,7 @@ async function main() {
 
 
     const priceFeedAddress = "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"; // replace with your price feed address
-    const minimumDonation = hre.ethers.utils.parseEther(minimumDonationInEther.toString());
+    const minimumDonation = ethers.utils(minimumDonationInEther.toString());
     ; // 0.1 ETH
 
     // Start deployment, replace with your constructor arguments if any
