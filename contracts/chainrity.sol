@@ -82,7 +82,7 @@ contract DonationPlatform is AutomationCompatibleInterface {
 
     // Function to get minimum donation amount in reference currency (e.g., USD) using Chainlink Price Feed
     function getMinimumDonationInUSD() public view returns (uint256) {
-        AggregatorV3Interface priceFeed = AggregatorV3Interface(priceFeedAddress);
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(0xF9680D99D6C9589e2a93a78A04A279e509205945);
         (,int256 answer,,,) = priceFeed.latestRoundData();
         // Convert minimumDonation in Wei to reference currency using price feed data
         // additional logic needed for conversion based on price feed decimals etc.

@@ -21,6 +21,8 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@chainlink/contracts": "^1.1.0"
+    "@chainlink/contracts": "^1.1.0",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "dotenv": "^16.4.5"
   }
 }

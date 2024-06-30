@@ -2,6 +2,10 @@ require("@nomicfoundation/hardhat-toolbox");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
+  paths: {
+    sources: "./contracts",
+    artifacts: "./artifacts"
+  },
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {},
