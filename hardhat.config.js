@@ -1,6 +1,4 @@
 require("@nomicfoundation/hardhat-toolbox");
-require('dotenv').config();
-
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -10,12 +8,7 @@ module.exports = {
   },
   defaultNetwork: "hardhat",
   networks: {
-    hardhat: {
-      forking: {
-        url: "https://sepolia.infura.io/v3/27231dfa77724bada6829c319a868ebf", // replace with your node's URL
-      },
-    },
-    
+    hardhat: {},
   },
   solidity: {
     version: "0.8.24",
